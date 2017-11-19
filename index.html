@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bob's burger</title>
+    <link rel="icon" href="./favicons.gif">
+    <link rel="stylesheet" href="./source/css/material-icons.css">
+    <link rel="stylesheet" href="./source/css/main.css">
+    <script type="text/javascript" src="./source/js/angular.js"></script>
+    <script type="text/javascript" src="./source/js/ngStorage.js"></script>
+    <script type="text/javascript" src="./source/scripts/main.js"></script>
+    <script type="text/javascript" src="./source/scripts/controllers/file-tree.controller.js"></script>
+    <script type="text/javascript" src="./source/scripts/services/files.service.js"></script>
+  </head>
+  <body ng-app="mainApp" ng-controller="fileTree.controller">
+    <header>
+      <div class="img-container">
+        <img src="./resources/images/bobsburgers-logo-2.png" alt="Familia">
+      </div>
+      <div class="img-container">
+        <img src="./resources/images/bobsburgers-logo.png" alt="Logo">
+      </div>
+    </header>
+    <section id="main">
+      <section id="file-tree">
+        <div class="file-tree-parent">
+          <img src="./resources/images/cleaning-bob.gif" alt="bob el limpiador">
+          <div class="file-tree-container">
+            <div class="file-tree-header">
+              <h2>Directorio</h2>
+              <h3>{{folderName}}:</h3>
+            </div>
+            <div class="file-tree-content">
+              <div ng-repeat="dir in filePath.directories | orderBy: dir.dir ? 'name' : 'episode'">
+                <div ng-click="dir.dir ? open(dir) : put(dir)">
+                  <div ng-if="dir.dir" ng-mouseenter="set(dir)" ng-mouseleave="unset(dir)" class="dir">
+                    <i class="material-icons">{{!dir.hovered ? 'folder' :'folder_open'}}</i><span>{{dir.name}}</span>
+                  </div>
+                  <div ng-if="!dir.dir" ng-mouseenter="set(dir)" ng-mouseleave="unset(dir)" class="file">
+                    <i ng-if="dir.name.endsWith('.crdownload')" class="material-icons">sync_problem</i>
+                    <i ng-if="!dir.name.endsWith('.crdownload')" class="material-icons">{{dir.hovered ? 'play_circle_outline' :'play_circle_filled'}}</i>
+                    <span>{{dir.episodeName}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="file-tree-footer">
+              <button type="button" ng-click="back()">back</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="video">
+        <div class="video-container">
+          <div class="video-header">
+            <h2>{{!!selected.episodeName ? selected.episodeName : 'Elige un episodio'}}</h2>
+          </div>
+          <div class="video-content">
+            <video ng-src="{{selected.src}}" poster="./resources/images/poster.jpg" class="{{selected.episode ? 'opened':''}}" controls></video>
+          </div>
+          <div class="video-content" ng-if="!selected.episode" style="display: flex;
+    justify-content: center;
+    align-items: center; margin-bottom: 1em;">
+            <i style="font-size: 4em" class="material-icons">insert_emoticon</i> <span>Selecciona un episodio.</span>
+          </div>
+          <div ng-if="!!selected.episode" class="video-footer">
+            <h2>Episodio {{selected.episode}}</h2>
+          </div>
+        </div>
+      </section>
+    </section>
+  </body>
+</html>
